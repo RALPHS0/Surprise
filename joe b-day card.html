@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Joe B-Day Card</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1a1818;
+            font-family: sans-serif;
+            perspective: 1500px; /* Gives 3D depth to the page turn */
+        }
+        
+        .card-container {
+            position: relative;
+            width: 600px;
+            height: 700px;
+        }
+
+        #card-toggle {
+            display: none;
+        }
+
+        /* THE BOTTOM CARD (Stays completely fixed underneath) */
+        .card {
+            width: 600px;
+            height: 700px;
+            position: absolute; 
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1; /* Always stays on the bottom layer */
+        }
+
+        /* THE MOVING PAGE WORKER (Hinges on the right edge) */
+        .front-page {
+            width: 600px;
+            height: 700px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2; /* Sits over the bottom card */
+            transform-style: preserve-3d;
+            transform-origin: right center; /* Anchored to the right side like a book hinge */
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+        }
+
+        /* When checked, flips the entire front page to the right side like a book cover */
+        #card-toggle:checked ~ .front-page {
+            transform: rotateY(180deg);
+        }
+
+        /* INNER CONTAINERS FOR THE FLIPPING PAGE */
+        .page-front, .page-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            backface-visibility: hidden; /* Hides the reverse side so it doesn't glitch through */
+        }
+
+        /* The outside cover containing your u.jpeg image */
+        .page-front {
+            z-index: 2;
+            transform: rotateY(0deg);
+        }
+
+        /* The inside blank cover of the page (pre-flipped so it faces you when swung right) */
+        .page-back {
+            background-color: #0b0b0d; /* Keeps the clean aesthetic background for the left page inside */
+            transform: rotateY(180deg); 
+        }
+
+        .h1 {
+            color: #b39059;
+            z-index: 3;
+            position: absolute;
+            top: 5%;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+        }
+
+        img {
+            width: 600px;
+            height:700px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <!-- Invisible checkbox tracking the open/close state -->
+        <input type="checkbox" id="card-toggle">
+        
+        <!-- THE CARD (Your exact bottom layer that shows cleanly on the right side) -->
+        <div class="card">
+            <img src="WhatsApp Image 2026-11-04 at 10.41.00 PM.jpeg" alt="">
+        </div>
+
+        <!-- THE FRONT PAGE (Flips wide open to the right side, carrying its image with it) -->
+        <label for="card-toggle" class="front-page">
+            
+            <!-- Outside sheet facing the user initially -->
+            <div class="page-front">
+                <img src="u.jpeg" alt="">
+                <h1 class="h1">Open The Mystery Letter</h1>
+            </div>
+
+            <!-- Inside blank sheet revealed on the left when opened -->
+            <div class="page-back">
+                <!-- If you want an image or text on the inside of the flipped front page, put it here -->
+            </div>
+
+        </label>
+    </div>
+
+</body>
+</html>
